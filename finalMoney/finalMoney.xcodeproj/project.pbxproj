@@ -14,6 +14,7 @@
 		50FFD0561D45F095002ABF8C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50FFD0541D45F095002ABF8C /* LaunchScreen.storyboard */; };
 		50FFD0611D45F095002ABF8C /* finalMoneyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FFD0601D45F095002ABF8C /* finalMoneyTests.swift */; };
 		50FFD06C1D45F095002ABF8C /* finalMoneyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50FFD06B1D45F095002ABF8C /* finalMoneyUITests.swift */; };
+		50FFD07A1D45F17C002ABF8C /* back.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 50FFD0791D45F17C002ABF8C /* back.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		50FFD0671D45F095002ABF8C /* finalMoneyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = finalMoneyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		50FFD06B1D45F095002ABF8C /* finalMoneyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = finalMoneyUITests.swift; sourceTree = "<group>"; };
 		50FFD06D1D45F095002ABF8C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		50FFD0791D45F17C002ABF8C /* back.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = back.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +104,7 @@
 				50FFD04F1D45F095002ABF8C /* Main.storyboard */,
 				50FFD0521D45F095002ABF8C /* Assets.xcassets */,
 				50FFD0541D45F095002ABF8C /* LaunchScreen.storyboard */,
+				50FFD0791D45F17C002ABF8C /* back.jpg */,
 				50FFD0571D45F095002ABF8C /* Info.plist */,
 			);
 			path = finalMoney;
@@ -229,6 +232,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				50FFD07A1D45F17C002ABF8C /* back.jpg in Resources */,
 				50FFD0561D45F095002ABF8C /* LaunchScreen.storyboard in Resources */,
 				50FFD0531D45F095002ABF8C /* Assets.xcassets in Resources */,
 				50FFD0511D45F095002ABF8C /* Main.storyboard in Resources */,
