@@ -25,7 +25,7 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
         requestUrl("http://app-cdn.2q10.com/api/v2/currency?ver=iphone")
         
         creatScrollView()
-        
+//        自定义view创建
         creatSelfView()
         
         leftTableView()
