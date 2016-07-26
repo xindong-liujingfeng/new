@@ -8,13 +8,15 @@
 import UIKit
 import CoreData
 class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,NSURLSessionDataDelegate {
-    
+
     var button:UIButton?
     var scrollView : UIScrollView?
     var keyArray : NSMutableArray?
     var valueArray : NSMutableArray?
     var pickView: UIPickerView?
     var leftTableVeiw : UITableView?
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.whiteColor()
@@ -38,7 +40,7 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
         
         
     }
-    
+   
     func creatButton() -> Void {
         self.button = UIButton(type: UIButtonType.System)
         self.button!.frame = CGRectMake(10 + (self.leftTableVeiw?.frame.size.width)!, (self.scrollView?.frame.size.height)! / 2 - 40 , 40, 80)
@@ -124,6 +126,7 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
             
             
             let imageView = UIImageView(image: UIImage(named: "back.jpg"))
+            
             imageView.frame = CGRectMake(0, 0, width, height)
             //        scrollview添加到视图上
             self.view.addSubview(scrollView!)
@@ -231,6 +234,7 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
         
         let view:newView?
         view = newView()
+        
         switch component {
         case 0:
             (scrollView?.viewWithTag(100) as! newView).label?.text =  self.keyArray![row] as? String
@@ -329,7 +333,6 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
     }
     
     
-    
     //   MARK:lefttableview
     func leftTableView(){
         
@@ -393,6 +396,8 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
             let text:UITextField = self.scrollView?.viewWithTag(200 + i) as! UITextField
             text.text = nil
             text.placeholder = "0.00"
+    
+        
         }
         
         for i:Int in 0...3{
@@ -434,7 +439,6 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
                     self.valueArray = NSMutableArray(array:array1)
                 }
                 catch{
-                    
                     
                 }
             }
