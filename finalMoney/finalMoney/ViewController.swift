@@ -21,17 +21,18 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
         self.view.backgroundColor = UIColor.whiteColor()
         self.keyArray = NSMutableArray()
         self.valueArray = NSMutableArray()
-        
-        
-        requestUrl("http://app-cdn.2q10.com/api/v2/currency?ver=iphone")
-        
         creatScrollView()
-//        自定义view创建
-        creatSelfView()
-        
+
         leftTableView()
         
         creatPickView()
+
+        requestUrl("http://app-cdn.2q10.com/api/v2/currency?ver=iphone")
+        
+//        自定义view创建
+        creatSelfView()
+        
+        
         
         creatButton()
         
@@ -50,9 +51,15 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
         self.scrollView?.addSubview(self.button!)
     }
     //    MARK:button点击事件
-    
     func buttonDid() -> Void {
         //alertViewController创建
+        let alert:UIAlertController = creatAleartController()
+        self.presentViewController(alert, animated: true, completion: nil)
+        
+    }
+    
+    
+    func creatAleartController() -> UIAlertController  {
         let alert:UIAlertController = UIAlertController(title: "添加", message: "添加新货币", preferredStyle: UIAlertControllerStyle.Alert)
         let aleartAction =  UIAlertAction(title: "确定", style: UIAlertActionStyle.Default) { (action:UIAlertAction) in
             let textField1 = alert.textFields?.first
@@ -61,11 +68,8 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
             let string = (textField2?.text)! as NSString
             let float = string.floatValue
             let number = NSNumber(float: float)
-            
             self.valueArray?.insertObject(number, atIndex: 0)
-            
             self.pickView?.reloadAllComponents()
-            
             for i:Int in 0...3{
                 self.pickView?.selectRow(0, inComponent: i, animated: true)
                 let textField = self.scrollView?.viewWithTag(200 + i) as! UITextField
@@ -76,11 +80,8 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
             for i:Int in 0...3 {
                 self.pickerView(self.pickView!, didSelectRow: 0, inComponent: i)
             }
-            
             self.leftTableVeiw?.reloadData()
-            
         }
-        
         let alearAction1 = UIAlertAction(title: "取消", style: UIAlertActionStyle.Cancel, handler: nil)
         
         alert.addTextFieldWithConfigurationHandler { (textfield:UITextField) in
@@ -91,8 +92,8 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
         }
         alert.addAction(alearAction1)
         alert.addAction(aleartAction)
-        self.presentViewController(alert, animated: true, completion: nil)
-        
+
+        return alert
     }
     
     func creatSelfView() -> Void {
