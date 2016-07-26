@@ -8,7 +8,6 @@
 import UIKit
 import CoreData
 class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,NSURLSessionDataDelegate {
-
     var button:UIButton?
     var scrollView : UIScrollView?
     var keyArray : NSMutableArray?
@@ -207,7 +206,6 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
         scrollView!.addSubview(pickView!)
         
     }
-    
     
     
     
