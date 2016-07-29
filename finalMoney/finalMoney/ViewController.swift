@@ -9,7 +9,6 @@ import UIKit
 import CoreData
 class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,NSURLSessionDataDelegate {
     var button:UIButton?
-    var scrollView : UIScrollView?
     var keyArray : NSMutableArray?
     var valueArray : NSMutableArray?
     var pickView: UIPickerView?
@@ -21,7 +20,8 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
         self.view.backgroundColor = UIColor.whiteColor()
         self.keyArray = NSMutableArray()
         self.valueArray = NSMutableArray()
-        creatScrollView()
+        
+        _  = self.scrollview
 
         leftTableView()
         
@@ -43,12 +43,13 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
    
     func creatButton() -> Void {
         self.button = UIButton(type: UIButtonType.System)
-        self.button!.frame = CGRectMake(10 + (self.leftTableVeiw?.frame.size.width)!, (self.scrollView?.frame.size.height)! / 2 - 40 , 40, 80)
+        self.button?.frame = CGRectMake(10 + (self.leftTableVeiw?.frame.width)!, self.scrollview.frame.height / 2 - 40, 40, 80)
+        
         self.button!.backgroundColor = UIColor.whiteColor()
         self.button!.setTitle("添加", forState: UIControlState.Normal)
         self.button!.setTitleColor(UIColor.blackColor(),forState: .Normal)
         self.button!.addTarget(self, action: #selector(ViewController.buttonDid), forControlEvents: UIControlEvents.TouchUpInside)
-        self.scrollView?.addSubview(self.button!)
+        self.scrollview.addSubview(self.button!)
     }
     //    MARK:button点击事件
     func buttonDid() -> Void {
@@ -72,7 +73,8 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
             self.pickView?.reloadAllComponents()
             for i:Int in 0...3{
                 self.pickView?.selectRow(0, inComponent: i, animated: true)
-                let textField = self.scrollView?.viewWithTag(200 + i) as! UITextField
+                
+                let textField = self.scrollview.viewWithTag(200 + i) as! UITextField
                 textField.text = nil
                 textField.placeholder = "0.00"
             }
@@ -103,37 +105,35 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
             newview.tag = 100 + i
             newview.textField?.delegate = self
             newview.textField?.tag = 200 + i
-            scrollView!.addSubview(newview)
+            self.scrollview.addSubview(newview)
             
         }
     }
     
-    
-    func creatScrollView(){
+    lazy var scrollview:UIScrollView = {
+        let width:CGFloat = self.view.frame.size.width * 2
+        let height:CGFloat = self.view.frame.size.height
+        //        scrollview的属性设置
+        var scrollView:UIScrollView = UIScrollView()
+        scrollView.frame = CGRectMake(0, 20, width / 2, height + 20)
+        scrollView.contentSize = CGSizeMake(width, height)
+        scrollView.bounces = false
+        scrollView.contentOffset = CGPointMake(self.view.frame.size.width, 0)
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.pagingEnabled = true
+        scrollView.delegate = self
         
-        if scrollView == nil{
-            let width:CGFloat = self.view.frame.size.width * 2
-            let height:CGFloat = self.view.frame.size.height
-            //        scrollview的属性设置
-            scrollView = UIScrollView()
-            scrollView?.frame = CGRectMake(0, 20, width / 2, height + 20)
-            scrollView?.contentSize = CGSizeMake(width, height)
-            scrollView?.bounces = false
-            scrollView?.contentOffset = CGPointMake(self.view.frame.size.width, 0)
-            scrollView?.showsHorizontalScrollIndicator = false
-            scrollView?.pagingEnabled = true
-            scrollView?.delegate = self
-            
-            
-            let imageView = UIImageView(image: UIImage(named: "back.jpg"))
-            
-            imageView.frame = CGRectMake(0, 0, width, height)
-            //        scrollview添加到视图上
-            self.view.addSubview(scrollView!)
-            scrollView!.addSubview(imageView)
-            
-        }
-    }
+        
+        let imageView = UIImageView(image: UIImage(named: "back.jpg"))
+        
+        imageView.frame = CGRectMake(0, 0, width, height)
+        //        scrollview添加到视图上
+        self.view.addSubview(scrollView)
+        scrollView.addSubview(imageView)
+        return scrollView
+        
+    }()
+    
     //    MARK:取消键盘的第一响应（失去焦点)
     func scrollViewDidScroll(scrollView: UIScrollView) {
         self.view.endEditing(true)
@@ -204,7 +204,7 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
         pickView?.frame = CGRectMake(10 + self.view.frame.size.width, h * 0.6, w - 20, h / 3)
         pickView?.delegate = self
         pickView?.dataSource = self
-        scrollView!.addSubview(pickView!)
+        self.scrollview.addSubview(pickView!)
         
     }
     
@@ -236,20 +236,21 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
         
         switch component {
         case 0:
-            (scrollView?.viewWithTag(100) as! newView).label?.text =  self.keyArray![row] as? String
-            self.textFieldDidEndEditing(self.scrollView?.viewWithTag(200) as! UITextField)
+            (self.scrollview.viewWithTag(100) as!newView).label?.text = self.keyArray![row] as? String
+            
+            self.textFieldDidEndEditing(self.scrollview.viewWithTag(200) as! UITextField)
             
         case 1:
-            (scrollView?.viewWithTag(101) as! newView).label?.text =  self.keyArray![row] as? String
-            self.textFieldDidEndEditing(self.scrollView?.viewWithTag(201) as! UITextField)
+            (self.scrollview.viewWithTag(101) as!newView).label?.text = self.keyArray![row] as? String
+            self.textFieldDidEndEditing(self.scrollview.viewWithTag(201) as! UITextField)
             
         case 2:
-            (scrollView?.viewWithTag(102) as! newView).label?.text =  self.keyArray![row] as? String
-            self.textFieldDidEndEditing(self.scrollView?.viewWithTag(202) as! UITextField)
+            (self.scrollview.viewWithTag(102) as!newView).label?.text = self.keyArray![row] as? String
+            self.textFieldDidEndEditing(self.scrollview.viewWithTag(202) as! UITextField)
             
         case 3:
-            (scrollView?.viewWithTag(103) as! newView).label?.text =  self.keyArray![row] as? String
-            self.textFieldDidEndEditing(self.scrollView?.viewWithTag(203) as! UITextField)
+            (self.scrollview.viewWithTag(103) as!newView).label?.text = self.keyArray![row] as? String
+            self.textFieldDidEndEditing(self.scrollview.viewWithTag(203) as! UITextField)
             
         default: break
             
@@ -290,7 +291,9 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
     
     func editMultiple(textField:UITextField) -> Float {
         //选中的textField所在的自定义view，获取其对比美金的汇率
-        let view:newView = self.scrollView?.viewWithTag(textField.tag - 100) as! newView
+    
+        let view:newView = self.scrollview.viewWithTag(textField.tag - 100 )as! newView
+        
         var index: Int = 0
         //取出label.text对应的汇率
         for string in self.keyArray! {
@@ -311,7 +314,8 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
     func editUnSelected(textField:UITextField,multiple:Float) -> Void {
         for i:Int in 0...3{
             if i != textField.tag - 200  {
-                let myView:newView = self.scrollView?.viewWithTag(100 + i) as! newView
+
+                let myView:newView = self.scrollview.viewWithTag(100 + i) as! newView
                 var newIndex: Int = 0
                 
                 //取出label.text对应的汇率
@@ -342,8 +346,7 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
         self.leftTableVeiw!.dataSource = self
         self.leftTableVeiw!.delegate = self
         
-        scrollView?.addSubview(self.leftTableVeiw!)
-        
+        self.scrollview.addSubview(self.leftTableVeiw!)
     }
     
     
@@ -392,7 +395,7 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
         self.pickView?.reloadAllComponents()
         
         for i:Int in 0...3 {
-            let text:UITextField = self.scrollView?.viewWithTag(200 + i) as! UITextField
+            let text:UITextField = self.scrollview.viewWithTag(200 + i)as! UITextField
             text.text = nil
             text.placeholder = "0.00"
     
