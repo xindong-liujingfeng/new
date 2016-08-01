@@ -134,11 +134,112 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
         
     }()
     
-    //    MARK:取消键盘的第一响应（失去焦点)
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        self.view.endEditing(true)
+    
+   
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+
+        if scrollview.contentOffset.x == self.view.bounds.width {
+            
+            
+            for i in 0...3 {
+                var newview:newView = newView()
+                newview = self.scrollview.viewWithTag(100 + i) as! newView
+                switch newview.tag - 100{
+                case 0:
+                    UIView.animateWithDuration(0.5, animations: {
+                        newview.frame.origin.x = 10 + self.view.bounds.width
+                    })
+                    
+                case 1:
+                    UIView.animateWithDuration(0.5, delay: 0.3, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+                        newview.frame.origin.x = 10 + self.view.bounds.width
+                        }, completion: { (Bool) in
+                    })
+                case 2:
+                    UIView.animateWithDuration(0.5, delay: 0.4, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+                        newview.frame.origin.x = 10 + self.view.bounds.width
+                        }, completion: { (Bool) in
+                            
+                    })
+                case 3:
+                    UIView.animateWithDuration(0.5, delay: 0.5, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+                        newview.frame.origin.x = 10 + self.view.bounds.width
+                        }, completion: { (Bool) in
+                            
+                    })
+                    
+                default: break
+                }
+                
+                
+                
+            }
+
+        
+        
+        }
+
+        
+        
         
     }
+    
+    
+    
+    //    MARK:取消键盘的第一响应（失去焦点) 渐变效果
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        self.view.endEditing(true)
+     
+        
+        let width:CGFloat = self.view.bounds.size.width
+        
+        
+        for i in 0...3 {
+            var newview:newView = newView()
+            newview = self.scrollview.viewWithTag(100 + i) as! newView
+            
+            if self.scrollview.contentOffset.x < width  * 0.7 {
+                switch newview.tag - 100{
+                case 0:
+                    
+                    UIView.animateWithDuration(1, animations: {
+                        newview.frame.origin.x = 2 * width
+                    })
+                    
+                case 1:
+                    UIView.animateWithDuration(1, delay: 0.3, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+                        newview.frame.origin.x = 2 * width
+                        }, completion: { (Bool) in
+                            
+                    })
+                case 2:
+                    UIView.animateWithDuration(1, delay: 0.6, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+                        newview.frame.origin.x = 2 * width
+                        
+                        }, completion: { (Bool) in
+                            
+                    })
+                case 3:
+                    UIView.animateWithDuration(1, delay: 0.9, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+                        newview.frame.origin.x = 2 * width
+                        
+                        }, completion: { (Bool) in
+                            
+                    })
+                    
+                default: break
+                }
+                
+            }
+            
+        }
+        
+        
+    }
+    
+
+    
     
     
     //    MARK:自定义view
@@ -151,6 +252,7 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
             super.init(frame: frame)
             self.backgroundColor = UIColor.grayColor()
             self.alpha = 0.8
+        
             
             imageView = UIImageView(frame: CGRectZero)
             imageView?.backgroundColor = UIColor.yellowColor()
