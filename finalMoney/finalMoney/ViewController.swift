@@ -137,60 +137,12 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
     
    
     
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-
-        if scrollview.contentOffset.x == self.view.bounds.width {
-            
-            
-            for i in 0...3 {
-                var newview:newView = newView()
-                newview = self.scrollview.viewWithTag(100 + i) as! newView
-                switch newview.tag - 100{
-                case 0:
-                    UIView.animateWithDuration(0.5, animations: {
-                        newview.frame.origin.x = 10 + self.view.bounds.width
-                    })
-                    
-                case 1:
-                    UIView.animateWithDuration(0.5, delay: 0.3, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
-                        newview.frame.origin.x = 10 + self.view.bounds.width
-                        }, completion: { (Bool) in
-                    })
-                case 2:
-                    UIView.animateWithDuration(0.5, delay: 0.4, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
-                        newview.frame.origin.x = 10 + self.view.bounds.width
-                        }, completion: { (Bool) in
-                            
-                    })
-                case 3:
-                    UIView.animateWithDuration(0.5, delay: 0.5, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
-                        newview.frame.origin.x = 10 + self.view.bounds.width
-                        }, completion: { (Bool) in
-                            
-                    })
-                    
-                default: break
-                }
-                
-                
-                
-            }
-
-        
-        
-        }
-
-        
-        
-        
-    }
-    
     
     
     //    MARK:取消键盘的第一响应（失去焦点) 渐变效果
     func scrollViewDidScroll(scrollView: UIScrollView) {
         self.view.endEditing(true)
-     
+        
         
         let width:CGFloat = self.view.bounds.size.width
         
@@ -199,34 +151,45 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
             var newview:newView = newView()
             newview = self.scrollview.viewWithTag(100 + i) as! newView
             
-            if self.scrollview.contentOffset.x < width  * 0.7 {
-                switch newview.tag - 100{
-                case 0:
+            let newTag:Int = newview.tag - 100
+            
+            if self.scrollview.contentOffset.x < width  * 0.6 {
+                switch newTag{
                     
+                case 0:
                     UIView.animateWithDuration(1, animations: {
                         newview.frame.origin.x = 2 * width
                     })
                     
                 case 1:
-                    UIView.animateWithDuration(1, delay: 0.3, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
-                        newview.frame.origin.x = 2 * width
-                        }, completion: { (Bool) in
-                            
-                    })
+                    viewOut(newview, delay: 0.3, width: width)
+                    
                 case 2:
-                    UIView.animateWithDuration(1, delay: 0.6, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
-                        newview.frame.origin.x = 2 * width
-                        
-                        }, completion: { (Bool) in
-                            
-                    })
+                    viewOut(newview, delay: 0.6, width: width)
+                    
                 case 3:
-                    UIView.animateWithDuration(1, delay: 0.9, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
-                        newview.frame.origin.x = 2 * width
-                        
-                        }, completion: { (Bool) in
-                            
+                    viewOut(newview, delay: 0.9, width: width)
+                    
+            
+                default: break
+
+                }
+                
+            }else{
+                switch newview.tag - 100{
+                case 0:
+                    UIView.animateWithDuration(0.5, animations: {
+                        newview.frame.origin.x = 10 + self.view.bounds.width
                     })
+                    
+                case 1:
+                    viewIn(newview, delay: 0.3)
+                    
+                case 2:
+                    viewIn(newview, delay: 0.4)
+                    
+                case 3:
+                    viewIn(newview, delay: 0.5)
                     
                 default: break
                 }
@@ -238,6 +201,24 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
         
     }
     
+    
+    func viewIn(newview:newView,delay:Double) -> Void {
+        UIView.animateWithDuration(0.5, delay: delay, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+            newview.frame.origin.x = 10 + self.view.bounds.width
+            }, completion: { (Bool) in
+                
+        })
+
+    }
+    
+    func viewOut(newview:newView,delay:Double,width:CGFloat) -> Void {
+        UIView.animateWithDuration(1, delay: delay, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+            newview.frame.origin.x = 2 * width
+            
+            }, completion: { (Bool) in
+                
+        })
+    }
 
     
     
