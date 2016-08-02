@@ -7,7 +7,7 @@
 
 import UIKit
 import CoreData
-class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,NSURLSessionDataDelegate {
+class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate,UIPickerViewDataSource,UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,NSURLSessionDataDelegate,UISearchBarDelegate {
     var button:UIButton?
     var keyArray : NSMutableArray?
     var valueArray : NSMutableArray?
@@ -154,6 +154,10 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
             let newTag:Int = newview.tag - 100
             
             if self.scrollview.contentOffset.x < width  * 0.6 {
+                UIView.animateWithDuration(1, animations: {
+                    self.pickView?.alpha = 0.5
+                })
+                
                 switch newTag{
                     
                 case 0:
@@ -176,6 +180,13 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
                 }
                 
             }else{
+                
+                UIView.animateWithDuration(1, animations: {
+                    self.pickView?.alpha = 0.8
+                })
+                
+                
+                
                 switch newview.tag - 100{
                 case 0:
                     UIView.animateWithDuration(0.5, animations: {
@@ -428,7 +439,7 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
         self.leftTableVeiw!.backgroundColor = UIColor.grayColor()
         self.leftTableVeiw!.dataSource = self
         self.leftTableVeiw!.delegate = self
-        
+        self.leftTableVeiw?.tableHeaderView = self.searchBar
         self.scrollview.addSubview(self.leftTableVeiw!)
     }
     
@@ -471,6 +482,54 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
         
     }
     
+//    MARK:searchbar的创建
+    lazy var searchBar:UISearchBar = {
+        
+        let search:UISearchBar = UISearchBar()
+        search.frame = CGRectMake(0, 0, 10, 44)
+        search.delegate = self
+        search.placeholder = "搜索"
+        
+        return search
+    }()
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        if self.keyArray?.count == 0 {
+            let alertController:UIAlertController = UIAlertController(title: "网络错误", message: "还没有数据呢请耐心等待", preferredStyle: UIAlertControllerStyle.Alert)
+            
+            let alertAction:UIAlertAction = UIAlertAction(title: "确定", style: UIAlertActionStyle.Cancel, handler: nil)
+            let alertAction1 = UIAlertAction(title: "重新连接", style: UIAlertActionStyle.Default, handler: { (action) in
+               self.requestUrl("http://app-cdn.2q10.com/api/v2/currency?ver=iphone")
+                
+            })
+            
+            alertController.addAction(alertAction)
+            alertController.addAction(alertAction1)
+            self.presentViewController(alertController, animated: true, completion: nil)
+        }else{
+            
+            for string in self.keyArray! {
+                if string as? String == searchBar.text {
+                    
+                }else{
+                    let alertController:UIAlertController = UIAlertController(title: nil, message: "找不到搜索内容", preferredStyle: UIAlertControllerStyle.ActionSheet)
+                    
+                    
+                    let alertAction:UIAlertAction = UIAlertAction(title: "取消", style: UIAlertActionStyle.Cancel, handler: nil)
+                    
+                    alertController.addAction(alertAction)
+                    
+                    self.presentViewController(alertController, animated: true, completion: nil)
+                    
+                    return
+                    
+                }
+            }
+        }
+        
+    }
+    
+
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         self.tableView(self.leftTableVeiw!, commitEditingStyle: UITableViewCellEditingStyle.Delete, forRowAtIndexPath: indexPath)
@@ -511,6 +570,7 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
         let configuration:NSURLSessionConfiguration = NSURLSessionConfiguration.defaultSessionConfiguration()
         let session:NSURLSession = NSURLSession(configuration: configuration)
         
+        
         let task:NSURLSessionDataTask = session.dataTaskWithRequest(requets, completionHandler: {
             (data:NSData?,response:NSURLResponse?,error:NSError?)->Void in
             if error == nil{
@@ -522,15 +582,19 @@ class ViewController: UIViewController,UIScrollViewDelegate,UIPickerViewDelegate
                     self.keyArray = NSMutableArray(array: array)
                     let array1 :NSArray = (newDic?.allValues)!
                     self.valueArray = NSMutableArray(array:array1)
+                    
+                    //        在主线程刷新ui
+                    dispatch_async(dispatch_get_main_queue()){
+                        self.leftTableVeiw?.reloadData()
+                        self.pickView?.reloadAllComponents()
+                    }
+
                 }
                 catch{
-                    
+
                 }
-            }
-            //        在主线程刷新ui
-            dispatch_async(dispatch_get_main_queue()){
-                self.leftTableVeiw?.reloadData()
-                self.pickView?.reloadAllComponents()
+            }else{
+//                print(error)
             }
             
         })
